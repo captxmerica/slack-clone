@@ -3,12 +3,36 @@ export default (sequelize, DataTypes) => {
     username: {
       type: DataTypes.STRING,
       unique: true,
+      validate: {
+        isAlphanumeric: {
+          args: true,
+          msg: 'Username can only contain letters and numbers',
+        },
+        len: {
+          args: [4 - 16],
+          msg: 'Username must between between 4 and 16 characters',
+        },
+      },
     },
     email: {
       type: DataTypes.STRING,
       unique: true,
+      validate: {
+        isEmail: {
+          args: true,
+          msg: 'Please enter a valid email address',
+        },
+      },
     },
-    password: DataTypes.STRING,
+    password: {
+      type: DataTypes.STRING,
+      validate: {
+        len: {
+          args: [6 - 16],
+          msg: 'Password must be between 6 and 16 characters',
+        },
+      },
+    },
   });
   // sequlize uses belongs to many and 'through' to annotate 1 to many and many to many
   User.associate = (models) => {
