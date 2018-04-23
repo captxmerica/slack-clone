@@ -19,8 +19,10 @@ type RegisterResponse {
     errors: [Error!]
 }
 
+
 type Mutation {
     register(username: String!, email: String!, password: String!): RegisterResponse!
 }
+
 
     `;

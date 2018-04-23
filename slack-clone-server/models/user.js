@@ -26,12 +26,6 @@ export default (sequelize, DataTypes) => {
     },
     password: {
       type: DataTypes.STRING,
-      validate: {
-        len: {
-          args: [6 - 16],
-          msg: 'Password must be between 6 and 16 characters',
-        },
-      },
     },
   });
   // sequlize uses belongs to many and 'through' to annotate 1 to many and many to many
