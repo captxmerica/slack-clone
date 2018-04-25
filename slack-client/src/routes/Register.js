@@ -1,5 +1,5 @@
 import React from 'react';
-import { Header, Input, Button, Message, Grid, Segment } from 'semantic-ui-react';
+import { Header, Input, Button, Message, Grid, Segment, Form } from 'semantic-ui-react';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
@@ -13,9 +13,9 @@ class Register extends React.Component {
     passwordError: '',
   };
 
-  onChange = e => {
+  onChange = (e) => {
     const { name, value } = e.target;
-    //curly brackets so we get 'email' or 'username' and not the name of the property 'name'
+    // curly brackets so we get 'email' or 'username' and not the name of the property 'name'
     this.setState({ [name]: value });
   };
 
@@ -37,7 +37,7 @@ class Register extends React.Component {
     } else {
       const err = {};
       errors.forEach(({ path, message }) => {
-        //err[passwordError] = 'not long enough'
+        // err[passwordError] = 'not long enough'
         err[`${path}Error`] = message;
       });
 
@@ -46,7 +46,9 @@ class Register extends React.Component {
   };
 
   render() {
-    const { username, email, password, usernameError, emailError, passwordError } = this.state;
+    const {
+      username, email, password, usernameError, emailError, passwordError,
+    } = this.state;
     const errorList = [];
     if (usernameError) {
       errorList.push(usernameError);
@@ -65,43 +67,46 @@ class Register extends React.Component {
             <Header as="h2">Register</Header>
 
             <Segment stacked>
-              <Input
-                error={!!usernameError}
-                name="username"
-                onChange={this.onChange}
-                value={username}
-                placeholder="username"
-                icon="user"
-                iconPosition="left"
-                fluid
-              />
-              <Input
-                error={!!emailError}
-                name="email"
-                onChange={this.onChange}
-                value={email}
-                placeholder="email"
-                icon="mail"
-                iconPosition="left"
-                fluid
-              />
-              <Input
-                error={!!passwordError}
-                name="password"
-                onChange={this.onChange}
-                value={password}
-                type="password"
-                placeholder="password"
-                icon="lock"
-                iconPosition="left"
-                fluid
-              />
-              <Button onClick={this.onSubmit} color="primary">
-                Submit
-              </Button>
+              <Form>
+                <Input
+                  error={!!usernameError}
+                  name="username"
+                  onChange={this.onChange}
+                  value={username}
+                  placeholder="username"
+                  icon="user"
+                  iconPosition="left"
+                  fluid
+                />
+                <Input
+                  error={!!emailError}
+                  name="email"
+                  onChange={this.onChange}
+                  value={email}
+                  placeholder="email"
+                  icon="mail"
+                  iconPosition="left"
+                  fluid
+                />
+                <Input
+                  error={!!passwordError}
+                  name="password"
+                  onChange={this.onChange}
+                  value={password}
+                  type="password"
+                  placeholder="password"
+                  icon="lock"
+                  iconPosition="left"
+                  fluid
+                />
+                <br />
+                <Button onClick={this.onSubmit} color="twitter">
+                  Submit
+                </Button>
+              </Form>
             </Segment>
 
-            {emailError || usernameError || passwordError ? (
+            {errorList.length ? (
               <Message error header="There was some errors with your submission" list={errorList} />
             ) : null}
           </Grid.Column>
