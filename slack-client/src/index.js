@@ -12,15 +12,24 @@ import registerServiceWorker from './registerServiceWorker';
 
 const httpLink = createHttpLink({ uri: 'http://localhost:8081/graphql' });
 
-const token = localStorage.getItem('token');
-const middlewareLink = setContext(() => ({
-  headers: {
-    authorization: `Bearer ${token}` || null,
-  },
-}));
-const link = middlewareLink.concat(httpLink);
+const authLink = setContext((_, { headers }) => {
+  // get the authentication token from local storage if it exists
+  const token = localStorage.getItem('token');
+  const refreshToken = localStorage.getItem('refreshToken');
+  // return the headers to the context so httpLink can read them
+  return {
+    headers: {
+      ...headers,
+      authorization: token ? `Bearer ${token}` : null,
+      'x-token': token,
+      'x-refresh-token': refreshToken,
+
+    },
+  };
+});
+
 const client = new ApolloClient({
-  link,
+  link: authLink.concat(httpLink),
   cache: new InMemoryCache(),
 });
 
@@ -55,6 +64,7 @@ const client = new ApolloClient({
 //     },
 //   },
 // ]);
+
 const App = (
   <ApolloProvider client={client}>
     <Routes />

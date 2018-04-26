@@ -56,17 +56,15 @@ const graphqlEndpoint = '/graphql';
 app.use(
   graphqlEndpoint,
   bodyParser.json(),
-  graphqlExpress({
+  graphqlExpress(req => ({
     schema,
     context: {
       models,
-      user: {
-        id: 1,
-      },
+      user: req.user,
       SECRET,
       SECRET2,
     },
-  }),
+  })),
 );
 app.use('/graphiql', graphiqlExpress({ endpointURL: graphqlEndpoint }));
 
